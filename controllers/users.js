@@ -57,7 +57,27 @@ class UsersController {
             .catch((err) => {
                 return {
                     error: true,
-                    message: `Error retrieving user with id ${ id }`,
+                    message: `Error al obtener usuario con el id: ${ id }`,
+                }
+            });
+    }
+
+    static async deleteUser(id) {
+        return await User.findByIdAndRemove(id)
+            .then((user) => {
+                if (!user) {
+                    return {
+                        message: `No existe usuario asociado al id: ${ id }`
+                    }
+                }
+                return {
+                    message: 'Usuario eliminado de manera exitosa!'
+                }
+            })
+            .catch((err) => {
+                return {
+                    error: true,
+                    message: 'Ha ocurrido un problema al eliminar usuario'
                 }
             });
     }

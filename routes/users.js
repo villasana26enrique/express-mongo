@@ -17,7 +17,7 @@ router.post(basePath, asyncHandler(async(req, res) => {
      */
     if (!req.body.email || !req.body.password || !req.body.name) {
         return res.status(400).send({
-            message: "Required field can not be empty",
+            message: "Campos Requeridos no pueden estar vacíos.",
         });
     }
     const users = await UsersController.create(req.body);
@@ -43,6 +43,14 @@ router.get(`${ basePath }/:id`, asyncHandler(async(req, res) => {
         return res.status(500).json(users)
     }
     res.status(200).json(users)
+}));
+
+router.delete(`${ basePath }/:id`, asyncHandler(async(req, res) => {
+    const user = await UsersController.deleteUser(req.params.id);
+    if (user.error) {
+        return res.status(500).json(user)
+    }
+    res.status(200).json(user)
 }));
 
 module.exports = {
