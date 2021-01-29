@@ -25,8 +25,8 @@ class UsersController {
             .save()
             .then((data) => {
                 return {
-                    error: false,
-                    message: 'Usuario creado!'
+                    message: 'Usuario creado!',
+                    usuario: data
                 }
             })
             .catch((err) => {
@@ -77,7 +77,31 @@ class UsersController {
             .catch((err) => {
                 return {
                     error: true,
-                    message: 'Ha ocurrido un problema al eliminar usuario'
+                    message: 'Ha ocurrido un problema al eliminar usuario.'
+                }
+            });
+    }
+
+    static async update(id, data) {
+        /* El "new: true" se utiliza para retornar 
+         * el objeto modificado en vez del original
+         */
+        return await User.findByIdAndUpdate(id, data, { new: true })
+            .then((user) => {
+                if (!user) {
+                    return {
+                        message: 'No se ha encontrado usuario.'
+                    }
+                }
+                return {
+                    message: 'Usuario Actualizado',
+                    usuario: user
+                }
+            })
+            .catch((err) => {
+                return {
+                    error: true,
+                    message: 'Ha ocurrido un error al actualizar'
                 }
             });
     }
