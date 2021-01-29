@@ -36,6 +36,15 @@ router.get(basePath, asyncHandler(async(req, res) => {
     res.status(200).json(users)
 }));
 
+//Finding one user
+router.get(`${ basePath }/:id`, asyncHandler(async(req, res) => {
+    const users = await UsersController.getUser(req.params.id);
+    if (users.error) {
+        return res.status(500).json(users)
+    }
+    res.status(200).json(users)
+}));
+
 module.exports = {
     router
 };

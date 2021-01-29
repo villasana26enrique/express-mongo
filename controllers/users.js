@@ -48,6 +48,19 @@ class UsersController {
                 }
             });
     }
+
+    static async getUser(id) {
+        return await User.findById(id)
+            .then((user) => {
+                return user
+            })
+            .catch((err) => {
+                return {
+                    error: true,
+                    message: `Error retrieving user with id ${ id }`,
+                }
+            });
+    }
 }
 
 module.exports = UsersController;
