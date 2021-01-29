@@ -1,9 +1,40 @@
 const User = require('../models/user');
+const bcrypt = require("bcrypt");
 
 class UsersController {
 
     static async create(data) {
-        // Hello World
+
+        /*
+         * Create a user
+         */
+        const user = new User({
+            email: data.email,
+            password: bcrypt.hashSync(data.password, 10),
+            name: data.name,
+            age: data.age,
+            gender: data.gender,
+            isActive: data.isActive,
+            userType: data.userType,
+        })
+
+        /*
+         * Save user to database
+         */
+        return await user
+            .save()
+            .then((data) => {
+                return {
+                    error: false,
+                    message: 'Usuario creado!'
+                }
+            })
+            .catch((err) => {
+                return {
+                    error: true,
+                    message: 'Ha ocurrido un error.'
+                }
+            })
     }
 }
 

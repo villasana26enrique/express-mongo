@@ -12,7 +12,18 @@ const UsersController = require('../controllers/users');
 
 // Example with controller
 router.post(basePath, asyncHandler(async(req, res) => {
-    const users = await UsersController.create();
+    /**
+     * validation request
+     */
+    if (!req.body.email || !req.body.password || !req.body.name) {
+        return res.status(400).send({
+            message: "Required field can not be empty",
+        });
+    }
+    const users = await UsersController.create(req.body);
+    if (users.message) {
+        return res.status(500).json(users)
+    }
     res.status(200).json(users)
 }));
 
