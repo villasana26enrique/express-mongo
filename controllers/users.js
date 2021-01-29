@@ -36,6 +36,18 @@ class UsersController {
                 }
             })
     }
+
+    static async listAll() {
+        return await User.find()
+            .sort({ name: -1 })
+            .then((users) => users)
+            .catch((err) => {
+                return {
+                    error: true,
+                    message: 'Ha ocurrido un error al obtener el listado'
+                }
+            });
+    }
 }
 
 module.exports = UsersController;

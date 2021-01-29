@@ -10,7 +10,7 @@ const UsersController = require('../controllers/users');
     res.send('respond with a resource');
 }); */
 
-// Example with controller
+// Create User
 router.post(basePath, asyncHandler(async(req, res) => {
     /**
      * validation request
@@ -21,7 +21,16 @@ router.post(basePath, asyncHandler(async(req, res) => {
         });
     }
     const users = await UsersController.create(req.body);
-    if (users.message) {
+    if (users.error) {
+        return res.status(500).json(users)
+    }
+    res.status(200).json(users)
+}));
+
+//listAll
+router.get(basePath, asyncHandler(async(req, res) => {
+    const users = await UsersController.listAll();
+    if (users.error) {
         return res.status(500).json(users)
     }
     res.status(200).json(users)
