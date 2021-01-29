@@ -1,27 +1,56 @@
-const { Model } = require('objection');
-const knex = require('../database/src/connection');
+const mongoose = require("../conn");
+const schema = new mongoose.Schema({
+    email: {
+        desc: "The user's email address.",
+        trim: true,
+        type: String,
+        index: true,
+        unique: true,
+        required: true,
+    },
+    password: {
+        desc: "user password",
+        trim: true,
+        type: String,
+        required: true,
+        select: false,
+    },
+    name: {
+        desc: "The user's name.",
+        trim: true,
+        type: String,
+        required: true,
+    },
+    age: {
+        desc: "The users's age.",
+        type: Number,
+    },
+    gender: {
+        desc: "user gender.",
+        trim: true,
+        type: String,
+        enum: ["Male", "Female", "Others"],
+        default: "Others",
+        required: true,
+    },
+    isActive: {
+        desc: "is Active.",
+        type: Boolean,
+        default: true,
+        required: true,
+    },
+    userType: {
+        desc: "user roles.",
+        trim: true,
+        type: String,
+        enum: ["Admin", "User"],
+        default: "Admin",
+        required: true,
+    },
+}, {
+    strict: true,
+    versionKey: false,
+    timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" },
+});
 
-Model.knex(knex);
-
-class User extends Model {
-    static get tableName() {
-        return 'users'
-    }
-
-    static get relationMappings() {
-        const UserType = require('./user_type');
-        return {
-            user_types: {
-                relation: Model.BelongsToOneRelation,
-                modelClass: UserType,
-                join: {
-                    from: 'users.userTypeId',
-                    to: 'user_types.id'
-                }
-            }
-        }
-    }
-
-}
-
-module.exports = User;
+module.exports = mongoose.model("Users", schema);
